@@ -2,7 +2,7 @@ var cssmin = require( "cssmin" ).cssmin,
 	minimatch = require( "minimatch" ),
 	path = require( "path" );
 
-var uglifyFactory = function( _, anvil ) {
+var cssminFactory = function( _, anvil ) {
 	return anvil.plugin( {
 		name: "anvil.cssmin",
 		activity: "post-process",
@@ -25,13 +25,18 @@ var uglifyFactory = function( _, anvil ) {
 					this.exclusive = true;
 					this.fileList = this.config.exclude;
 				}
-			} else if( command.cssmin ) {
+			}
+			if( command.cssmin ) {
 				this.all = true;
 			}
 			done();
 		},
 
 		run: function( done ) {
+			if( !this.all && !this.exclusive && !this.inclusive ) {
+				done();
+				return;
+			}
 			var self = this,
 				getRegex = function( sep ) { return anvil.utility.parseRegex( "/[\\" + sep + "]/g" ); },
 				osSep = path.sep,
@@ -115,4 +120,4 @@ var uglifyFactory = function( _, anvil ) {
 	} );
 };
 
-module.exports = uglifyFactory;
+module.exports = cssminFactory;
