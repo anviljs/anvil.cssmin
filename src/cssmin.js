@@ -1,8 +1,8 @@
 var cssmin,
 	path = require( "path" );
 
-var cssminFactory = function( _, anvil ) {
-	return anvil.plugin( {
+module.exports = function( _, anvil ) {
+	anvil.plugin( {
 		name: "anvil.cssmin",
 		activity: "post-process",
 		all: false,
@@ -121,5 +121,3 @@ var cssminFactory = function( _, anvil ) {
 		}
 	} );
 };
-
-module.exports = cssminFactory;
