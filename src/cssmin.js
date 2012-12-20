@@ -1,5 +1,4 @@
-var cssmin = require( "cssmin" ).cssmin,
-	minimatch = require( "minimatch" ),
+var cssmin,
 	path = require( "path" );
 
 var cssminFactory = function( _, anvil ) {
@@ -37,6 +36,9 @@ var cssminFactory = function( _, anvil ) {
 				done();
 				return;
 			}
+			if( !cssmin ) {
+				cssmin = require( "cssmin" ).cssmin;
+			}
 			var self = this,
 				getRegex = function( sep ) { return anvil.utility.parseRegex( "/[\\" + sep + "]/g" ); },
 				osSep = path.sep,
@@ -56,7 +58,7 @@ var cssminFactory = function( _, anvil ) {
 				any = function( file ) {
 					return _.any( specs, function( spec ) {
 						return file === spec ||
-								minimatch.match( [ file ], spec.replace( /^.[\/]/, "/" ), {} ).length > 0;
+								anvil.fs.match( [ file ], spec.replace( /^.[\/]/, "/" ), {} ).length > 0;
 					} );
 				},
 				getPath = function( file ) {
